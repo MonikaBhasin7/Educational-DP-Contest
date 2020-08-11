@@ -1,0 +1,42 @@
+/*https://atcoder.jp/contests/dp/tasks/dp_a*/
+#include<iostream>
+#include<vector>
+#include<bits/stdc++.h>
+using namespace std;
+int go(int n,int size,vector<int>&v,vector<int>&memo)
+{
+    if(n==0)
+    {
+       return 0;
+    }
+    if(n==1)
+    {
+        return abs(v[1]-v[0]);
+    }
+    if(memo[n]!=-1)
+    {
+        return memo[n];
+    }
+    int m=go(n-1,size,v,memo)+abs(v[n]-v[n-1]);
+    int l=go(n-2,size,v,memo)+abs(v[n]-v[n-2]);
+    return memo[n]=min(m,l);
+}
+main()
+{
+  int i,j;
+  int n;
+  cin>>n;
+  vector<int>v;
+  for(i=0;i<n;i++)
+  {
+      int a;
+      cin>>a;
+      v.push_back(a);
+  }
+  vector<int>memo;
+  for(i=0;i<n;i++)
+  {
+      memo.push_back(-1);
+  }
+  cout<<go(n-1,n,v,memo);
+}
