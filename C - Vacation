@@ -1,0 +1,56 @@
+/*https://atcoder.jp/contests/dp/tasks/dp_c*/
+#include<iostream>
+#include<vector>
+#include<bits/stdc++.h>
+using namespace std;
+int go(int index,int row,vector<vector<int>>&v,vector<vector<int>>&memo)
+{
+    if(row==v.size())
+    {
+        return 0;
+    }
+    if(memo[row][index]!=-1)
+    {
+        return memo[row][index];
+    }
+    int sum=v[row][index];
+    int o=0;
+    if(index==0)
+    {
+       o=o+max(go(1,row+1,v,memo),go(2,row+1,v,memo));
+    }
+    else if(index==1)
+    {
+        o=o+max(go(0,row+1,v,memo),go(2,row+1,v,memo));
+    }
+    else if(index==2)
+    {
+        o=o+max(go(0,row+1,v,memo),go(1,row+1,v,memo));
+    }
+    sum=sum+o;
+    return memo[row][index]=sum;
+}
+main()
+{
+  int i,j;
+  int k;
+  cin>>k;
+  vector<vector<int>>v(k,vector<int>(3));
+  for(i=0;i<k;i++)
+  {
+      int m,n,o;
+      cin>>m>>n>>o;
+      v[i][0]=m;
+      v[i][1]=n;
+      v[i][2]=o;
+  }
+  vector<vector<int>>memo(k,vector<int>(3));
+  for(i=0;i<k;i++)
+  {
+      for(j=0;j<3;j++)
+      {
+          memo[i][j]=-1;
+      }
+  }
+  cout<<max(go(0,0,v,memo),max(go(1,0,v,memo),go(2,0,v,memo)));
+}
